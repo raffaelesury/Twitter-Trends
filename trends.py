@@ -202,10 +202,21 @@ def analyze_tweet_sentiment(tweet):
     False
     """
     # You may change any of the lines below.
-    average = make_sentiment(None)
     "*** YOUR CODE HERE ***"
-    return average
-
+    average = 0;
+    no_sentiment_found = 1
+    num_words = 0;
+    words = tweet_words(tweet)
+    for word in words:
+        sentiment = get_word_sentiment(word)
+        if has_sentiment(sentiment):
+            no_sentiment_found = 0
+            average += sentiment_value(sentiment)
+            num_words += 1
+    if no_sentiment_found:
+        return make_sentiment(None)
+    else:
+        return make_sentiment(average/num_words)
 
 #################################
 # Phase 2: The Geometry of Maps #
