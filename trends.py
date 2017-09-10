@@ -116,7 +116,21 @@ def extract_words(text):
     ['cat', 'on', 'my', 'keyboard']
     """
     "*** YOUR CODE HERE ***"
-    return text.split()  # Replace this line
+    #return text.split()  # Replace this line
+    split_text = list()
+    word = list()
+    word_added = True
+    text_with_dot = ''.join((text,'.')) #ugly
+    for character in text_with_dot:
+        if character in ascii_letters:
+            word_added = False
+            word.append(character)
+        else:
+            if not word_added:
+                split_text.append(''.join(word))
+                word_added = True
+                word = []
+    return split_text
 
 def make_sentiment(value):
     """Return a sentiment, which represents a value that may not exist.
