@@ -245,6 +245,22 @@ def find_centroid(polygon):
     (1.0, 2.0, 0.0)
     """
     "*** YOUR CODE HERE ***"
+    area = 0
+    centroid_lat = 0
+    centroid_lon = 0
+    for i in range(len(polygon) - 1):
+        member = (latitude(polygon[i]) * longitude(polygon[i+1]) - latitude(polygon[i+1])
+                 * longitude(polygon[i]))
+        area += member
+        centroid_lat += member * (latitude(polygon[i]) + latitude(polygon[i+1]))
+        centroid_lon += member * (longitude(polygon[i]) + longitude(polygon[i+1]))
+    area = area / 2
+    if not area: 
+        return (latitude(polygon[0]),longitude(polygon[0]),area)
+    else:
+        centroid_lat = centroid_lat/(area * 6)
+        centroid_lon = centroid_lon/(area * 6)
+        return (centroid_lat,centroid_lon,abs(area))
 
 def find_state_center(polygons):
     """Compute the geographic center of a state, averaged over its polygons.
