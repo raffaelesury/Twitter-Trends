@@ -284,7 +284,17 @@ def find_state_center(polygons):
     -156.21763
     """
     "*** YOUR CODE HERE ***"
-
+    lat = 0
+    lon = 0
+    area = 0
+    for polygon in polygons:
+        centroid = find_centroid(polygon)
+        lat += centroid[0]*centroid[2]
+        lon += centroid[1]*centroid[2]
+        area += centroid[2]
+    lat = lat/area
+    lon = lon/area
+    return make_position(lat,lon)
 
 ###################################
 # Phase 3: The Mood of the Nation #
