@@ -6,7 +6,8 @@ from geo import us_states, geo_distance, make_position, longitude, latitude
 from maps import draw_state, draw_name, draw_dot, wait
 from string import ascii_letters
 from ucb import main, trace, interact, log_current_line
-
+from math import sqrt
+from collections import defaultdict
 
 ###################################
 # Phase 1: The Feelings in Tweets #
@@ -319,9 +320,31 @@ def group_tweets_by_state(tweets):
     >>> tweet_string(california_tweets[0])
     '"welcome to san francisco" @ (38, -122)'
     """
-    tweets_by_state = {}
+    tweets_by_state = defaultdict(list)
     "*** YOUR CODE HERE ***"
-    return tweets_by_state
+    state_centers = {}
+    for state in us_states:
+        state_centers[state] = find_state_center(us_states[state])
+    def two_points_distance(position1, position2):
+        distance = (sqrt(abs((latitude(position1) - latitude(position2))**2 
+                    + (longitude(position1) - longitude(position2))**2)))
+        return distance
+    def tweet_state(tweet, us_states):
+        first_flag = 1
+        for state in us_states:
+            distance_new = two_points_distance(tweet_location(tweet),state_centers[state])
+            if first_flag:
+                closest_distance = distance_new
+                closest_state = state
+                first_flag = 0
+            if distance_new < closest_distance:
+                closest_distance = distance_new
+                closest_state = state
+        return closest_state
+    for tweet in tweets:
+        closest_state = tweet_state(tweet,us_states)
+        tweets_by_state[closest_state].append(tweet)
+    return dict(tweets_by_state)
 
 def average_sentiments(tweets_by_state):
     """Calculate the average sentiment of the states by averaging over all
