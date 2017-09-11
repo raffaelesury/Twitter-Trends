@@ -360,6 +360,18 @@ def average_sentiments(tweets_by_state):
     """
     averaged_state_sentiments = {}
     "*** YOUR CODE HERE ***"
+    for state in tweets_by_state:
+        ave_sentiment = 0
+        include_flag = 0
+        tweet_with_sent_count = 0
+        for tweet in tweets_by_state[state]:
+            sentiment = analyze_tweet_sentiment(tweet)
+            if has_sentiment(sentiment):
+                ave_sentiment += sentiment_value(sentiment)
+                tweet_with_sent_count += 1
+                include_flag = 1
+        if include_flag:
+            averaged_state_sentiments[state] = ave_sentiment/tweet_with_sent_count
     return averaged_state_sentiments
 
 
